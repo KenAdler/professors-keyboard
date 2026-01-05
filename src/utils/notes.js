@@ -47,22 +47,23 @@ export const noteToStaffPosition = (noteName, clef = 'treble') => {
   }
 }
 
-// Get all notes for C4 and C5 octaves only (C4-B4 and C5-B5)
-// Version: 2-octaves-only - Only returns C4 and C5 octaves
+// Get all notes for C4 and C5 octaves ONLY - NO C2, C3, or C6
+// This function MUST return only C4-B4 and C5-B5 (24 notes total)
 export const getAllNotes = () => {
   const notes = []
-  // STRICTLY only C4 and C5 octaves - no other octaves
+  // ONLY octaves 4 and 5 - nothing else!
   const octaves = [4, 5]
   const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
   
-  octaves.forEach(octave => {
-    noteNames.forEach(note => {
+  // Build notes array - ONLY C4 and C5 octaves
+  for (const octave of octaves) {
+    for (const note of noteNames) {
       notes.push(`${note}${octave}`)
-    })
-  })
+    }
+  }
   
-  // Verify: should return exactly 24 notes (12 per octave)
-  // C4-B4 (12 notes) + C5-B5 (12 notes) = 24 total
+  // Should return exactly 24 notes: C4-B4 (12) + C5-B5 (12)
+  // NO C2, C3, C6, or any other octaves!
   return notes
 }
 
