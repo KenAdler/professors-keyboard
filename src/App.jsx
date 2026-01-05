@@ -1,17 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import PianoKeyboard from './components/PianoKeyboard'
 import Staff from './components/Staff'
 import './App.css'
 
 function App() {
   const [notes, setNotes] = useState([])
+  const noteIdCounter = useRef(0)
 
   const handleKeyPress = (note) => {
-    setNotes(prevNotes => [...prevNotes, { note, id: Date.now() + Math.random() }])
+    const newNote = { note, id: `note-${noteIdCounter.current++}-${Date.now()}` }
+    setNotes(prevNotes => [...prevNotes, newNote])
   }
 
   const handleStaffClick = (note) => {
-    setNotes(prevNotes => [...prevNotes, { note, id: Date.now() + Math.random() }])
+    const newNote = { note, id: `note-${noteIdCounter.current++}-${Date.now()}` }
+    setNotes(prevNotes => [...prevNotes, newNote])
   }
 
   return (

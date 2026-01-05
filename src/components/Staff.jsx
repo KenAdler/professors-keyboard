@@ -63,67 +63,6 @@ const Staff = ({ notes, onStaffClick }) => {
     return staffTop + (14 - position) * (lineSpacing / 2)
   }
 
-  const renderNote = (note, index) => {
-    const x = noteStartX + (index * noteSpacing)
-    const y = getNoteY(note)
-    const isSharp = note.includes('#')
-    const noteRadius = 8
-
-    return (
-      <>
-        {/* Ledger lines for this note */}
-        {renderLedgerLinesForNote(y, x)}
-        
-        {/* Sharp symbol for sharp notes */}
-        {isSharp && (
-          <text
-            x={x - 20}
-            y={y + 5}
-            fontSize="20"
-            fill="#000"
-            fontFamily="serif"
-            fontWeight="bold"
-          >
-            ♯
-          </text>
-        )}
-        
-        {/* Quarter note head (filled circle) */}
-        <circle
-          cx={x}
-          cy={y}
-          r={noteRadius}
-          fill="#000"
-          className="staff-note"
-        />
-        
-        {/* Quarter note stem - up for notes below middle line, down for notes above */}
-        {y > staffTop + 2 * lineSpacing ? (
-          // Stem goes up (for notes below middle line)
-          <line
-            x1={x + noteRadius}
-            y1={y}
-            x2={x + noteRadius}
-            y2={y - 30}
-            stroke="#000"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        ) : (
-          // Stem goes down (for notes above middle line)
-          <line
-            x1={x + noteRadius}
-            y1={y}
-            x2={x + noteRadius}
-            y2={y + 30}
-            stroke="#000"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        )}
-      </>
-    )
-  }
 
   const renderLedgerLinesForNote = (y, x) => {
     const lines = []
@@ -203,10 +142,64 @@ const Staff = ({ notes, onStaffClick }) => {
         {/* Render all notes */}
         {notes && notes.length > 0 && notes.map((noteObj, index) => {
           const note = typeof noteObj === 'string' ? noteObj : noteObj.note
-          const id = typeof noteObj === 'string' ? index : noteObj.id
+          const id = typeof noteObj === 'string' ? `note-${index}-${note}` : `note-${noteObj.id}`
+          const x = noteStartX + (index * noteSpacing)
+          const y = getNoteY(note)
+          const isSharp = note.includes('#')
+          const noteRadius = 8
+          
           return (
-            <g key={`note-${id}`} className="staff-note-group">
-              {renderNote(note, index)}
+            <g key={id} className="staff-note-group">
+              {/* Ledger lines for this note */}
+              {renderLedgerLinesForNote(y, x)}
+              
+              {/* Sharp symbol for sharp notes */}
+              {isSharp && (
+                <text
+                  x={x - 20}
+                  y={y + 5}
+                  fontSize="20"
+                  fill="#000"
+                  fontFamily="serif"
+                  fontWeight="bold"
+                >
+                  ♯
+                </text>
+              )}
+              
+              {/* Quarter note head (filled circle) */}
+              <circle
+                cx={x}
+                cy={y}
+                r={noteRadius}
+                fill="#000"
+                className="staff-note"
+              />
+              
+              {/* Quarter note stem - up for notes below middle line, down for notes above */}
+              {y > staffTop + 2 * lineSpacing ? (
+                // Stem goes up (for notes below middle line)
+                <line
+                  x1={x + noteRadius}
+                  y1={y}
+                  x2={x + noteRadius}
+                  y2={y - 30}
+                  stroke="#000"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              ) : (
+                // Stem goes down (for notes above middle line)
+                <line
+                  x1={x + noteRadius}
+                  y1={y}
+                  x2={x + noteRadius}
+                  y2={y + 30}
+                  stroke="#000"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              )}
             </g>
           )
         })}
