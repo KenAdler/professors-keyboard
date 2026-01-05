@@ -70,7 +70,7 @@ const Staff = ({ notes, onStaffClick }) => {
     const noteRadius = 8
 
     return (
-      <g key={`note-${index}-${note}`} className="staff-note-group">
+      <>
         {/* Ledger lines for this note */}
         {renderLedgerLinesForNote(y, x)}
         
@@ -121,7 +121,7 @@ const Staff = ({ notes, onStaffClick }) => {
             strokeLinecap="round"
           />
         )}
-      </g>
+      </>
     )
   }
 
@@ -201,7 +201,15 @@ const Staff = ({ notes, onStaffClick }) => {
         </text>
         
         {/* Render all notes */}
-        {notes.map((note, index) => renderNote(note, index))}
+        {notes && notes.length > 0 && notes.map((noteObj, index) => {
+          const note = typeof noteObj === 'string' ? noteObj : noteObj.note
+          const id = typeof noteObj === 'string' ? index : noteObj.id
+          return (
+            <g key={`note-${id}`} className="staff-note-group">
+              {renderNote(note, index)}
+            </g>
+          )
+        })}
         
         {/* Clickable areas for each staff position */}
         {getAllNotes().slice(0, 15).map((note, index) => {
