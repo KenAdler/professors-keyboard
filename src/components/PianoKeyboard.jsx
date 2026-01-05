@@ -41,6 +41,15 @@ const PianoKeyboard = ({ activeNote, onKeyPress }) => {
   }
 
   const allNotes = getAllNotes()
+  // Debug: Verify we only have C4 and C5 octaves
+  React.useEffect(() => {
+    const octaves = [...new Set(allNotes.map(n => n.match(/\d+/)?.[0]))]
+    console.log('Piano Keyboard - Total notes:', allNotes.length)
+    console.log('Piano Keyboard - Octaves:', octaves)
+    console.log('Piano Keyboard - First note:', allNotes[0])
+    console.log('Piano Keyboard - Last note:', allNotes[allNotes.length - 1])
+  }, [])
+  
   const whiteKeys = allNotes.filter(note => !isBlackKey(note))
   const blackKeys = allNotes.filter(note => isBlackKey(note))
 

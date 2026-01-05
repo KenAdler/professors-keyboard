@@ -148,6 +148,11 @@ const Staff = ({ notes, onStaffClick }) => {
           const isSharp = note.includes('#')
           const noteRadius = 8
           
+          // Debug log to verify horizontal positioning
+          if (index === 0 || index === notes.length - 1) {
+            console.log(`Note ${index}: ${note} at x=${x}, y=${y}`)
+          }
+          
           return (
             <g key={id} className="staff-note-group">
               {/* Ledger lines for this note */}
