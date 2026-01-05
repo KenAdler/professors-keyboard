@@ -48,15 +48,24 @@ The built files will be in the `dist` directory.
 
 ## Deployment
 
-### Quick Deploy to Netlify
+### 🌐 Live Site
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR_BADGE_ID/deploy-status)](https://app.netlify.com/sites/professors-keyboard/deploys)
+**Your app is live at:** https://professors-keyboard.netlify.app
 
-**One-click deploy:**
+### Automatic Deployments
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/KenAdler/professors-keyboard)
+The site is configured to automatically deploy via GitHub Actions when you push to `main`.
 
-Or follow the manual steps in [DEPLOY_NETLIFY.md](DEPLOY_NETLIFY.md)
+**To enable automatic deployments, add these GitHub secrets:**
+1. Go to: https://github.com/KenAdler/professors-keyboard/settings/secrets/actions
+2. Add `NETLIFY_AUTH_TOKEN`: `nfp_qZuPN5zAfmK5MDb9PRMT13ZLVaHPxp8P60e9`
+3. Add `NETLIFY_SITE_ID`: `f243168c-0e79-40e8-a3da-f8a48e77b00f`
+
+After adding the secrets, every push will automatically deploy!
+
+### Manual Deployment
+
+See [DEPLOY_NETLIFY.md](DEPLOY_NETLIFY.md) or [NETLIFY_API_SETUP.md](NETLIFY_API_SETUP.md) for details.
 
 ### Other Platforms
 
