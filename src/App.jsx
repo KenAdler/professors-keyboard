@@ -4,14 +4,14 @@ import Staff from './components/Staff'
 import './App.css'
 
 function App() {
-  const [activeNote, setActiveNote] = useState(null)
+  const [notes, setNotes] = useState([])
 
   const handleKeyPress = (note) => {
-    setActiveNote(note)
+    setNotes(prevNotes => [...prevNotes, note])
   }
 
   const handleStaffClick = (note) => {
-    setActiveNote(note)
+    setNotes(prevNotes => [...prevNotes, note])
   }
 
   return (
@@ -19,10 +19,18 @@ function App() {
       <header className="app-header">
         <h1>The Professor's Keyboard</h1>
         <p>Click on the piano keys or the staff to play music!</p>
+        {notes.length > 0 && (
+          <button 
+            onClick={() => setNotes([])} 
+            className="clear-button"
+          >
+            Clear Staff
+          </button>
+        )}
       </header>
       <div className="app-content">
-        <Staff activeNote={activeNote} onStaffClick={handleStaffClick} />
-        <PianoKeyboard activeNote={activeNote} onKeyPress={handleKeyPress} />
+        <Staff notes={notes} onStaffClick={handleStaffClick} />
+        <PianoKeyboard activeNote={notes[notes.length - 1]} onKeyPress={handleKeyPress} />
       </div>
     </div>
   )

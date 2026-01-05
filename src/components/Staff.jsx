@@ -1,37 +1,18 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { noteToStaffPosition, staffToNote, getAllNotes } from '../utils/notes'
 import { playNote, noteFrequencies } from '../utils/audio'
 import './Staff.css'
 
-const Staff = ({ activeNote, onStaffClick }) => {
-  const svgRef = useRef(null)
-  const noteRef = useRef(null)
+const Staff = ({ notes, onStaffClick }) => {
+  const svgRef = React.useRef(null)
 
   const staffHeight = 120
   const staffWidth = 800
   const lineSpacing = 20
   const staffTop = 50
   const clefWidth = 60
-
-  useEffect(() => {
-    if (activeNote) {
-      const position = noteToStaffPosition(activeNote, 'treble')
-      if (noteRef.current && position !== -1) {
-        updateNotePosition(position)
-      }
-    }
-  }, [activeNote])
-
-  const updateNotePosition = (position) => {
-    if (!noteRef.current) return
-    
-    const y = staffTop + (14 - position) * (lineSpacing / 2)
-    noteRef.current.setAttribute('cy', y)
-    noteRef.current.style.opacity = '1'
-    
-    // Animate note appearance
-    noteRef.current.style.transform = 'scale(1)'
-  }
+  const noteSpacing = 50 // Horizontal spacing between notes
+  const noteStartX = clefWidth + 50 // Starting X position for notes
 
   const handleStaffClick = (event) => {
     if (!svgRef.current) return
@@ -55,7 +36,7 @@ const Staff = ({ activeNote, onStaffClick }) => {
     onStaffClick(note)
   }
 
-  const renderStaffLines = () => {
+  const renderStaffLines = (width) => {
     const lines = []
     for (let i = 0; i < 5; i++) {
       const y = staffTop + i * lineSpacing
@@ -64,7 +45,7 @@ const Staff = ({ activeNote, onStaffClick }) => {
           key={`line-${i}`}
           x1={clefWidth}
           y1={y}
-          x2={staffWidth}
+          x2={width}
           y2={y}
           stroke="#000"
           strokeWidth="2"
@@ -74,9 +55,81 @@ const Staff = ({ activeNote, onStaffClick }) => {
     return lines
   }
 
-  const renderLedgerLines = (y) => {
+
+  const getNoteY = (note) => {
+    if (!note) return staffTop + 2 * lineSpacing
+    const position = noteToStaffPosition(note, 'treble')
+    if (position === -1) return staffTop + 2 * lineSpacing
+    return staffTop + (14 - position) * (lineSpacing / 2)
+  }
+
+  const renderNote = (note, index) => {
+    const x = noteStartX + (index * noteSpacing)
+    const y = getNoteY(note)
+    const isSharp = note.includes('#')
+    const noteRadius = 8
+
+    return (
+      <g key={`note-${index}-${note}`} className="staff-note-group">
+        {/* Ledger lines for this note */}
+        {renderLedgerLinesForNote(y, x)}
+        
+        {/* Sharp symbol for sharp notes */}
+        {isSharp && (
+          <text
+            x={x - 20}
+            y={y + 5}
+            fontSize="20"
+            fill="#000"
+            fontFamily="serif"
+            fontWeight="bold"
+          >
+            ♯
+          </text>
+        )}
+        
+        {/* Quarter note head (filled circle) */}
+        <circle
+          cx={x}
+          cy={y}
+          r={noteRadius}
+          fill="#000"
+          className="staff-note"
+        />
+        
+        {/* Quarter note stem - up for notes below middle line, down for notes above */}
+        {y > staffTop + 2 * lineSpacing ? (
+          // Stem goes up (for notes below middle line)
+          <line
+            x1={x + noteRadius}
+            y1={y}
+            x2={x + noteRadius}
+            y2={y - 30}
+            stroke="#000"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        ) : (
+          // Stem goes down (for notes above middle line)
+          <line
+            x1={x + noteRadius}
+            y1={y}
+            x2={x + noteRadius}
+            y2={y + 30}
+            stroke="#000"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        )}
+      </g>
+    )
+  }
+
+  const renderLedgerLinesForNote = (y, x) => {
     const lines = []
-    // Add ledger lines above staff (for high notes)
+    const ledgerLineWidth = 25
+    
+    // Ledger lines above staff (for high notes)
     if (y < staffTop) {
       const ledgerCount = Math.ceil((staffTop - y) / lineSpacing)
       for (let i = 1; i <= ledgerCount; i++) {
@@ -84,10 +137,10 @@ const Staff = ({ activeNote, onStaffClick }) => {
         if (ledgerY < staffTop - 2 * lineSpacing) {
           lines.push(
             <line
-              key={`ledger-above-${i}`}
-              x1={clefWidth + 20}
+              key={`ledger-above-${x}-${i}`}
+              x1={x - ledgerLineWidth / 2}
               y1={ledgerY}
-              x2={clefWidth + 80}
+              x2={x + ledgerLineWidth / 2}
               y2={ledgerY}
               stroke="#000"
               strokeWidth="2"
@@ -96,7 +149,8 @@ const Staff = ({ activeNote, onStaffClick }) => {
         }
       }
     }
-    // Add ledger lines below staff (for low notes)
+    
+    // Ledger lines below staff (for low notes)
     if (y > staffTop + 4 * lineSpacing) {
       const ledgerCount = Math.ceil((y - (staffTop + 4 * lineSpacing)) / lineSpacing)
       for (let i = 1; i <= ledgerCount; i++) {
@@ -104,10 +158,10 @@ const Staff = ({ activeNote, onStaffClick }) => {
         if (ledgerY > staffTop + 6 * lineSpacing) {
           lines.push(
             <line
-              key={`ledger-below-${i}`}
-              x1={clefWidth + 20}
+              key={`ledger-below-${x}-${i}`}
+              x1={x - ledgerLineWidth / 2}
               y1={ledgerY}
-              x2={clefWidth + 80}
+              x2={x + ledgerLineWidth / 2}
               y2={ledgerY}
               stroke="#000"
               strokeWidth="2"
@@ -116,27 +170,24 @@ const Staff = ({ activeNote, onStaffClick }) => {
         }
       }
     }
+    
     return lines
   }
 
-  const getNoteY = () => {
-    if (!activeNote) return staffTop + 2 * lineSpacing
-    const position = noteToStaffPosition(activeNote, 'treble')
-    if (position === -1) return staffTop + 2 * lineSpacing
-    return staffTop + (14 - position) * (lineSpacing / 2)
-  }
+  // Calculate dynamic width based on number of notes
+  const dynamicWidth = Math.max(staffWidth, noteStartX + (notes.length * noteSpacing) + 50)
 
   return (
     <div className="staff-container">
       <svg
         ref={svgRef}
-        width={staffWidth}
+        width={dynamicWidth}
         height={staffHeight + 100}
         className="staff-svg"
         onClick={handleStaffClick}
       >
-        {/* Staff lines */}
-        {renderStaffLines()}
+        {/* Staff lines - extend to dynamic width */}
+        {renderStaffLines(dynamicWidth)}
         
         {/* Treble clef */}
         <text
@@ -149,33 +200,8 @@ const Staff = ({ activeNote, onStaffClick }) => {
           𝄞
         </text>
         
-        {/* Note */}
-        {activeNote && (
-          <>
-            {renderLedgerLines(getNoteY())}
-            {/* Sharp symbol for sharp notes */}
-            {activeNote.includes('#') && (
-              <text
-                x={clefWidth + 35}
-                y={getNoteY() + 5}
-                fontSize="24"
-                fill="#000"
-                fontFamily="serif"
-                fontWeight="bold"
-              >
-                ♯
-              </text>
-            )}
-            <circle
-              ref={noteRef}
-              cx={clefWidth + 50}
-              cy={getNoteY()}
-              r="12"
-              fill="#000"
-              className="staff-note"
-            />
-          </>
-        )}
+        {/* Render all notes */}
+        {notes.map((note, index) => renderNote(note, index))}
         
         {/* Clickable areas for each staff position */}
         {getAllNotes().slice(0, 15).map((note, index) => {

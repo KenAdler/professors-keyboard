@@ -14,19 +14,22 @@
   border-radius: 5px;
 }
 
-.staff-note {
-  transition: all 0.2s ease;
+.staff-note-group {
   animation: noteAppear 0.3s ease;
+}
+
+.staff-note {
+  transition: all 0.1s ease;
 }
 
 @keyframes noteAppear {
   from {
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(0.5) translateY(-10px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 
