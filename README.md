@@ -48,32 +48,23 @@ The built files will be in the `dist` directory.
 
 ## Deployment
 
-### 🌐 Live Site
+### 🚀 Deploy to Vercel (Recommended)
 
-**Your app is live at:** https://professors-keyboard.netlify.app
+**One-click deploy:**
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/KenAdler/professors-keyboard)
 
-### Automatic Deployments
+Or follow the steps in [DEPLOY_VERCEL.md](DEPLOY_VERCEL.md)
 
-The site is configured to automatically deploy via GitHub Actions when you push to `main`.
-
-**To enable automatic deployments, add these GitHub secrets:**
-1. Go to: https://github.com/KenAdler/professors-keyboard/settings/secrets/actions
-2. Add `NETLIFY_AUTH_TOKEN`: `nfp_qZuPN5zAfmK5MDb9PRMT13ZLVaHPxp8P60e9`
-3. Add `NETLIFY_SITE_ID`: `f243168c-0e79-40e8-a3da-f8a48e77b00f`
-
-After adding the secrets, every push will automatically deploy!
-
-### Manual Deployment
-
-See [DEPLOY_NETLIFY.md](DEPLOY_NETLIFY.md) or [NETLIFY_API_SETUP.md](NETLIFY_API_SETUP.md) for details.
+**After deployment:**
+- Your site will be live at: `https://professors-keyboard.vercel.app` (or similar)
+- Every push to `main` automatically deploys
+- Preview deployments for every pull request
 
 ### Other Platforms
 
 This project is also configured for:
-- Vercel
 - GitHub Pages
-
-**📖 See [SETUP.md](SETUP.md) for detailed deployment instructions!**
+- Netlify (see [DEPLOY_NETLIFY.md](DEPLOY_NETLIFY.md) if needed)
 
 ## Technologies Used
 
