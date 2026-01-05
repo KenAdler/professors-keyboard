@@ -9,7 +9,11 @@ function App() {
 
   const handleKeyPress = (note) => {
     const newNote = { note, id: `note-${noteIdCounter.current++}-${Date.now()}` }
-    setNotes(prevNotes => [...prevNotes, newNote])
+    setNotes(prevNotes => {
+      const updated = [...prevNotes, newNote]
+      console.log('Adding note:', note, 'Total notes now:', updated.length)
+      return updated
+    })
   }
 
   const handleStaffClick = (note) => {
