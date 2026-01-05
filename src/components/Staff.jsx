@@ -153,6 +153,19 @@ const Staff = ({ activeNote, onStaffClick }) => {
         {activeNote && (
           <>
             {renderLedgerLines(getNoteY())}
+            {/* Sharp symbol for sharp notes */}
+            {activeNote.includes('#') && (
+              <text
+                x={clefWidth + 35}
+                y={getNoteY() + 5}
+                fontSize="24"
+                fill="#000"
+                fontFamily="serif"
+                fontWeight="bold"
+              >
+                ♯
+              </text>
+            )}
             <circle
               ref={noteRef}
               cx={clefWidth + 50}
@@ -161,17 +174,6 @@ const Staff = ({ activeNote, onStaffClick }) => {
               fill="#000"
               className="staff-note"
             />
-            <text
-              x={clefWidth + 50}
-              y={getNoteY() + 5}
-              fontSize="16"
-              fill="#fff"
-              textAnchor="middle"
-              fontFamily="serif"
-              fontWeight="bold"
-            >
-              {activeNote.replace('#', '♯')}
-            </text>
           </>
         )}
         

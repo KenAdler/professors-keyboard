@@ -49,11 +49,16 @@ The built files will be in the `dist` directory.
 ## Deployment
 
 This project is configured for easy deployment on platforms like:
-- Vercel
+- Vercel (recommended - easiest setup)
 - Netlify
 - GitHub Pages
 
-Simply connect your GitHub repository to your preferred platform and deploy!
+**📖 See [SETUP.md](SETUP.md) for detailed deployment instructions!**
+
+For quick setup:
+1. Create a GitHub repository (see SETUP.md)
+2. Run `./setup-github.sh` to connect and push your code
+3. Deploy to Vercel/Netlify by connecting your GitHub repo
 
 ## Technologies Used
 
