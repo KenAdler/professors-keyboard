@@ -48,17 +48,23 @@ The built files will be in the `dist` directory.
 
 ## Deployment
 
-This project is configured for easy deployment on platforms like:
-- Vercel (recommended - easiest setup)
-- Netlify
+### Quick Deploy to Netlify
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR_BADGE_ID/deploy-status)](https://app.netlify.com/sites/professors-keyboard/deploys)
+
+**One-click deploy:**
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/KenAdler/professors-keyboard)
+
+Or follow the manual steps in [DEPLOY_NETLIFY.md](DEPLOY_NETLIFY.md)
+
+### Other Platforms
+
+This project is also configured for:
+- Vercel
 - GitHub Pages
 
 **📖 See [SETUP.md](SETUP.md) for detailed deployment instructions!**
-
-For quick setup:
-1. Create a GitHub repository (see SETUP.md)
-2. Run `./setup-github.sh` to connect and push your code
-3. Deploy to Vercel/Netlify by connecting your GitHub repo
 
 ## Technologies Used
 
