@@ -21,7 +21,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>The Professor's Keyboard</h1>
-        <p>Click on the piano keys or the staff to play music!</p>
+        <p>Click on the piano keys or the staff to play music! (2 Octaves: C4-C5)</p>
         <button 
           onClick={() => setNotes([])} 
           className="clear-button"
@@ -40,4 +40,3 @@ function App() {
 
 export default App
 
-// Force deployment
